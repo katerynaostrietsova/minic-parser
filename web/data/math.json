@@ -1,0 +1,231 @@
+{
+"file": "examples/math.c",
+"source": "#include <stdio.h>\n\n// Квадратний корінь методом Ньютона\ndouble my_sqrt(double x) {\n    double g = x / 2.0;\n    for (int i = 0; i < 20; i++)\n        g = (g + x / g) / 2.0;\n    return g;\n}\n\ndouble power(double base, int e) {\n    double r = 1.0;\n    while (e > 0) {\n        r *= base;\n        e--;\n    }\n    return r;\n}\n\n// \"Висячий else\": else належить найближчому if\nvoid sign(int v) {\n    if (v >= 0)\n        if (v == 0)\n            printf(\"%d is zero\\n\", v);\n        else\n            printf(\"%d is positive\\n\", v);\n    else\n        printf(\"%d is negative\\n\", v);\n}\n\nint main() {\n    printf(\"sqrt(2) = %.6f\\n\", my_sqrt(2.0));\n    printf(\"2^10 = %.1f\\n\", power(2.0, 10));\n    printf(\"2 + 3 * 4 = %d\\n\", 2 + 3 * 4);\n    printf(\"(2 + 3) * 4 = %d\\n\", (2 + 3) * 4);\n    printf(\"10 - 4 - 3 = %d\\n\", 10 - 4 - 3);\n    printf(\"7 / 2 = %d, 7.0 / 2 = %.2f\\n\", 7 / 2, 7.0 / 2);\n    printf(\"-7 / 2 = %d, -7 %% 2 = %d\\n\", -7 / 2, -7 % 2);\n    sign(5);\n    sign(0);\n    sign(-3);\n    return 0;\n}\n",
+"python": "import sys\n\n\ndef _cdiv(a, b):\n    if b == 0:\n        raise ZeroDivisionError(\"division by zero\")\n    q = abs(a) // abs(b)\n    return q if (a >= 0) == (b >= 0) else -q\n\n\ndef _cmod(a, b):\n    return a - _cdiv(a, b) * b\n\n\ndef _printf(fmt, *args):\n    s = fmt % args\n    sys.stdout.write(s)\n    return len(s)\n\n\ndef my_sqrt(x):\n    g = x / 2.0\n    i = 0\n    while i < 20:\n        g = (g + x / g) / 2.0\n        i += 1\n    return g\n\n\ndef power(base, e):\n    r = 1.0\n    while e > 0:\n        r *= base\n        e -= 1\n    return r\n\n\ndef sign(v):\n    if v >= 0:\n        if v == 0:\n            _printf(\"%d is zero\\n\", v)\n        else:\n            _printf(\"%d is positive\\n\", v)\n    else:\n        _printf(\"%d is negative\\n\", v)\n\n\ndef main():\n    _printf(\"sqrt(2) = %.6f\\n\", my_sqrt(2.0))\n    _printf(\"2^10 = %.1f\\n\", power(2.0, 10))\n    _printf(\"2 + 3 * 4 = %d\\n\", 2 + 3 * 4)\n    _printf(\"(2 + 3) * 4 = %d\\n\", (2 + 3) * 4)\n    _printf(\"10 - 4 - 3 = %d\\n\", 10 - 4 - 3)\n    _printf(\"7 / 2 = %d, 7.0 / 2 = %.2f\\n\", _cdiv(7, 2), 7.0 / 2)\n    _printf(\"-7 / 2 = %d, -7 %% 2 = %d\\n\", _cdiv(-7, 2), _cmod(-7, 2))\n    sign(5)\n    sign(0)\n    sign(-3)\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main())\n",
+"output": "sqrt(2) = 1.414214\n2^10 = 1024.0\n2 + 3 * 4 = 14\n(2 + 3) * 4 = 20\n10 - 4 - 3 = 3\n7 / 2 = 3, 7.0 / 2 = 3.50\n-7 / 2 = -3, -7 % 2 = -1\n5 is positive\n0 is zero\n-3 is negative\n",
+"exit_code": 0,
+"ast":
+{"kind": "PROGRAM", "line": 4, "children": [
+  {"kind": "FUNC", "line": 4, "name": "my_sqrt", "decl_type": "double", "children": [
+    {"kind": "PARAMS", "line": 4, "children": [
+      {"kind": "PARAM", "line": 4, "name": "x", "decl_type": "double"}
+    ]},
+    {"kind": "BLOCK", "line": 4, "children": [
+      {"kind": "VAR_DECL", "line": 5, "decl_type": "double", "children": [
+        {"kind": "VAR", "line": 5, "name": "g", "type": "double", "children": [
+          {"kind": "BINOP", "line": 5, "op": "/", "type": "double", "children": [
+            {"kind": "ID", "line": 5, "name": "x", "type": "double"},
+            {"kind": "FLOAT_LIT", "line": 5, "value": 2, "type": "double"}
+          ]}
+        ]}
+      ]},
+      {"kind": "FOR", "line": 6, "children": [
+        {"kind": "VAR_DECL", "line": 6, "decl_type": "int", "children": [
+          {"kind": "VAR", "line": 6, "name": "i", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 6, "value": 0, "type": "int"}
+          ]}
+        ]},
+        {"kind": "BINOP", "line": 6, "op": "<", "type": "int", "children": [
+          {"kind": "ID", "line": 6, "name": "i", "type": "int"},
+          {"kind": "INT_LIT", "line": 6, "value": 20, "type": "int"}
+        ]},
+        {"kind": "INCDEC", "line": 6, "name": "i", "op": "++", "prefix": false, "type": "int"},
+        {"kind": "EXPR_STMT", "line": 7, "children": [
+          {"kind": "ASSIGN", "line": 7, "name": "g", "op": "=", "type": "double", "children": [
+            {"kind": "BINOP", "line": 7, "op": "/", "type": "double", "children": [
+              {"kind": "BINOP", "line": 7, "op": "+", "type": "double", "children": [
+                {"kind": "ID", "line": 7, "name": "g", "type": "double"},
+                {"kind": "BINOP", "line": 7, "op": "/", "type": "double", "children": [
+                  {"kind": "ID", "line": 7, "name": "x", "type": "double"},
+                  {"kind": "ID", "line": 7, "name": "g", "type": "double"}
+                ]}
+              ]},
+              {"kind": "FLOAT_LIT", "line": 7, "value": 2, "type": "double"}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 8, "children": [
+        {"kind": "ID", "line": 8, "name": "g", "type": "double"}
+      ]}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 11, "name": "power", "decl_type": "double", "children": [
+    {"kind": "PARAMS", "line": 11, "children": [
+      {"kind": "PARAM", "line": 11, "name": "base", "decl_type": "double"},
+      {"kind": "PARAM", "line": 11, "name": "e", "decl_type": "int"}
+    ]},
+    {"kind": "BLOCK", "line": 11, "children": [
+      {"kind": "VAR_DECL", "line": 12, "decl_type": "double", "children": [
+        {"kind": "VAR", "line": 12, "name": "r", "type": "double", "children": [
+          {"kind": "FLOAT_LIT", "line": 12, "value": 1, "type": "double"}
+        ]}
+      ]},
+      {"kind": "WHILE", "line": 13, "children": [
+        {"kind": "BINOP", "line": 13, "op": ">", "type": "int", "children": [
+          {"kind": "ID", "line": 13, "name": "e", "type": "int"},
+          {"kind": "INT_LIT", "line": 13, "value": 0, "type": "int"}
+        ]},
+        {"kind": "BLOCK", "line": 13, "children": [
+          {"kind": "EXPR_STMT", "line": 14, "children": [
+            {"kind": "ASSIGN", "line": 14, "name": "r", "op": "*=", "type": "double", "children": [
+              {"kind": "ID", "line": 14, "name": "base", "type": "double"}
+            ]}
+          ]},
+          {"kind": "EXPR_STMT", "line": 15, "children": [
+            {"kind": "INCDEC", "line": 15, "name": "e", "op": "--", "prefix": false, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 17, "children": [
+        {"kind": "ID", "line": 17, "name": "r", "type": "double"}
+      ]}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 21, "name": "sign", "decl_type": "void", "children": [
+    {"kind": "PARAMS", "line": 21, "children": [
+      {"kind": "PARAM", "line": 21, "name": "v", "decl_type": "int"}
+    ]},
+    {"kind": "BLOCK", "line": 21, "children": [
+      {"kind": "IF", "line": 22, "children": [
+        {"kind": "BINOP", "line": 22, "op": ">=", "type": "int", "children": [
+          {"kind": "ID", "line": 22, "name": "v", "type": "int"},
+          {"kind": "INT_LIT", "line": 22, "value": 0, "type": "int"}
+        ]},
+        {"kind": "IF", "line": 23, "children": [
+          {"kind": "BINOP", "line": 23, "op": "==", "type": "int", "children": [
+            {"kind": "ID", "line": 23, "name": "v", "type": "int"},
+            {"kind": "INT_LIT", "line": 23, "value": 0, "type": "int"}
+          ]},
+          {"kind": "EXPR_STMT", "line": 24, "children": [
+            {"kind": "CALL", "line": 24, "name": "printf", "type": "int", "children": [
+              {"kind": "STRING_LIT", "line": 24, "value": "%d is zero\n", "type": "string"},
+              {"kind": "ID", "line": 24, "name": "v", "type": "int"}
+            ]}
+          ]},
+          {"kind": "EXPR_STMT", "line": 26, "children": [
+            {"kind": "CALL", "line": 26, "name": "printf", "type": "int", "children": [
+              {"kind": "STRING_LIT", "line": 26, "value": "%d is positive\n", "type": "string"},
+              {"kind": "ID", "line": 26, "name": "v", "type": "int"}
+            ]}
+          ]}
+        ]},
+        {"kind": "EXPR_STMT", "line": 28, "children": [
+          {"kind": "CALL", "line": 28, "name": "printf", "type": "int", "children": [
+            {"kind": "STRING_LIT", "line": 28, "value": "%d is negative\n", "type": "string"},
+            {"kind": "ID", "line": 28, "name": "v", "type": "int"}
+          ]}
+        ]}
+      ]}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 31, "name": "main", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 31},
+    {"kind": "BLOCK", "line": 31, "children": [
+      {"kind": "EXPR_STMT", "line": 32, "children": [
+        {"kind": "CALL", "line": 32, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 32, "value": "sqrt(2) = %.6f\n", "type": "string"},
+          {"kind": "CALL", "line": 32, "name": "my_sqrt", "type": "double", "children": [
+            {"kind": "FLOAT_LIT", "line": 32, "value": 2, "type": "double"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 33, "children": [
+        {"kind": "CALL", "line": 33, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 33, "value": "2^10 = %.1f\n", "type": "string"},
+          {"kind": "CALL", "line": 33, "name": "power", "type": "double", "children": [
+            {"kind": "FLOAT_LIT", "line": 33, "value": 2, "type": "double"},
+            {"kind": "INT_LIT", "line": 33, "value": 10, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 34, "children": [
+        {"kind": "CALL", "line": 34, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 34, "value": "2 + 3 * 4 = %d\n", "type": "string"},
+          {"kind": "BINOP", "line": 34, "op": "+", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 34, "value": 2, "type": "int"},
+            {"kind": "BINOP", "line": 34, "op": "*", "type": "int", "children": [
+              {"kind": "INT_LIT", "line": 34, "value": 3, "type": "int"},
+              {"kind": "INT_LIT", "line": 34, "value": 4, "type": "int"}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 35, "children": [
+        {"kind": "CALL", "line": 35, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 35, "value": "(2 + 3) * 4 = %d\n", "type": "string"},
+          {"kind": "BINOP", "line": 35, "op": "*", "type": "int", "children": [
+            {"kind": "BINOP", "line": 35, "op": "+", "type": "int", "children": [
+              {"kind": "INT_LIT", "line": 35, "value": 2, "type": "int"},
+              {"kind": "INT_LIT", "line": 35, "value": 3, "type": "int"}
+            ]},
+            {"kind": "INT_LIT", "line": 35, "value": 4, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 36, "children": [
+        {"kind": "CALL", "line": 36, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 36, "value": "10 - 4 - 3 = %d\n", "type": "string"},
+          {"kind": "BINOP", "line": 36, "op": "-", "type": "int", "children": [
+            {"kind": "BINOP", "line": 36, "op": "-", "type": "int", "children": [
+              {"kind": "INT_LIT", "line": 36, "value": 10, "type": "int"},
+              {"kind": "INT_LIT", "line": 36, "value": 4, "type": "int"}
+            ]},
+            {"kind": "INT_LIT", "line": 36, "value": 3, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 37, "children": [
+        {"kind": "CALL", "line": 37, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 37, "value": "7 / 2 = %d, 7.0 / 2 = %.2f\n", "type": "string"},
+          {"kind": "BINOP", "line": 37, "op": "/", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 37, "value": 7, "type": "int"},
+            {"kind": "INT_LIT", "line": 37, "value": 2, "type": "int"}
+          ]},
+          {"kind": "BINOP", "line": 37, "op": "/", "type": "double", "children": [
+            {"kind": "FLOAT_LIT", "line": 37, "value": 7, "type": "double"},
+            {"kind": "INT_LIT", "line": 37, "value": 2, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 38, "children": [
+        {"kind": "CALL", "line": 38, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 38, "value": "-7 / 2 = %d, -7 %% 2 = %d\n", "type": "string"},
+          {"kind": "BINOP", "line": 38, "op": "/", "type": "int", "children": [
+            {"kind": "UNOP", "line": 38, "op": "-", "type": "int", "children": [
+              {"kind": "INT_LIT", "line": 38, "value": 7, "type": "int"}
+            ]},
+            {"kind": "INT_LIT", "line": 38, "value": 2, "type": "int"}
+          ]},
+          {"kind": "BINOP", "line": 38, "op": "%", "type": "int", "children": [
+            {"kind": "UNOP", "line": 38, "op": "-", "type": "int", "children": [
+              {"kind": "INT_LIT", "line": 38, "value": 7, "type": "int"}
+            ]},
+            {"kind": "INT_LIT", "line": 38, "value": 2, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 39, "children": [
+        {"kind": "CALL", "line": 39, "name": "sign", "type": "void", "children": [
+          {"kind": "INT_LIT", "line": 39, "value": 5, "type": "int"}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 40, "children": [
+        {"kind": "CALL", "line": 40, "name": "sign", "type": "void", "children": [
+          {"kind": "INT_LIT", "line": 40, "value": 0, "type": "int"}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 41, "children": [
+        {"kind": "CALL", "line": 41, "name": "sign", "type": "void", "children": [
+          {"kind": "UNOP", "line": 41, "op": "-", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 41, "value": 3, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 42, "children": [
+        {"kind": "INT_LIT", "line": 42, "value": 0, "type": "int"}
+      ]}
+    ]}
+  ]}
+]}
+}

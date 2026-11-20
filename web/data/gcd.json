@@ -1,0 +1,111 @@
+{
+"file": "examples/gcd.c",
+"source": "#include <stdio.h>\n\n/* Алгоритм Евкліда: НСД та НСК */\nint gcd(int a, int b) {\n    while (b != 0) {\n        int r = a % b;\n        a = b;\n        b = r;\n    }\n    return a;\n}\n\nint lcm(int a, int b) {\n    return a / gcd(a, b) * b;\n}\n\nint main() {\n    printf(\"gcd(48, 18) = %d\\n\", gcd(48, 18));\n    printf(\"gcd(1071, 462) = %d\\n\", gcd(1071, 462));\n    printf(\"lcm(4, 6) = %d\\n\", lcm(4, 6));\n    printf(\"lcm(21, 6) = %d\\n\", lcm(21, 6));\n    return 0;\n}\n",
+"python": "import sys\n\n\ndef _cdiv(a, b):\n    if b == 0:\n        raise ZeroDivisionError(\"division by zero\")\n    q = abs(a) // abs(b)\n    return q if (a >= 0) == (b >= 0) else -q\n\n\ndef _cmod(a, b):\n    return a - _cdiv(a, b) * b\n\n\ndef _printf(fmt, *args):\n    s = fmt % args\n    sys.stdout.write(s)\n    return len(s)\n\n\ndef gcd(a, b):\n    while b != 0:\n        r = _cmod(a, b)\n        a = b\n        b = r\n    return a\n\n\ndef lcm(a, b):\n    return _cdiv(a, gcd(a, b)) * b\n\n\ndef main():\n    _printf(\"gcd(48, 18) = %d\\n\", gcd(48, 18))\n    _printf(\"gcd(1071, 462) = %d\\n\", gcd(1071, 462))\n    _printf(\"lcm(4, 6) = %d\\n\", lcm(4, 6))\n    _printf(\"lcm(21, 6) = %d\\n\", lcm(21, 6))\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main())\n",
+"output": "gcd(48, 18) = 6\ngcd(1071, 462) = 21\nlcm(4, 6) = 12\nlcm(21, 6) = 42\n",
+"exit_code": 0,
+"ast":
+{"kind": "PROGRAM", "line": 4, "children": [
+  {"kind": "FUNC", "line": 4, "name": "gcd", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 4, "children": [
+      {"kind": "PARAM", "line": 4, "name": "a", "decl_type": "int"},
+      {"kind": "PARAM", "line": 4, "name": "b", "decl_type": "int"}
+    ]},
+    {"kind": "BLOCK", "line": 4, "children": [
+      {"kind": "WHILE", "line": 5, "children": [
+        {"kind": "BINOP", "line": 5, "op": "!=", "type": "int", "children": [
+          {"kind": "ID", "line": 5, "name": "b", "type": "int"},
+          {"kind": "INT_LIT", "line": 5, "value": 0, "type": "int"}
+        ]},
+        {"kind": "BLOCK", "line": 5, "children": [
+          {"kind": "VAR_DECL", "line": 6, "decl_type": "int", "children": [
+            {"kind": "VAR", "line": 6, "name": "r", "type": "int", "children": [
+              {"kind": "BINOP", "line": 6, "op": "%", "type": "int", "children": [
+                {"kind": "ID", "line": 6, "name": "a", "type": "int"},
+                {"kind": "ID", "line": 6, "name": "b", "type": "int"}
+              ]}
+            ]}
+          ]},
+          {"kind": "EXPR_STMT", "line": 7, "children": [
+            {"kind": "ASSIGN", "line": 7, "name": "a", "op": "=", "type": "int", "children": [
+              {"kind": "ID", "line": 7, "name": "b", "type": "int"}
+            ]}
+          ]},
+          {"kind": "EXPR_STMT", "line": 8, "children": [
+            {"kind": "ASSIGN", "line": 8, "name": "b", "op": "=", "type": "int", "children": [
+              {"kind": "ID", "line": 8, "name": "r", "type": "int"}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 10, "children": [
+        {"kind": "ID", "line": 10, "name": "a", "type": "int"}
+      ]}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 13, "name": "lcm", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 13, "children": [
+      {"kind": "PARAM", "line": 13, "name": "a", "decl_type": "int"},
+      {"kind": "PARAM", "line": 13, "name": "b", "decl_type": "int"}
+    ]},
+    {"kind": "BLOCK", "line": 13, "children": [
+      {"kind": "RETURN", "line": 14, "children": [
+        {"kind": "BINOP", "line": 14, "op": "*", "type": "int", "children": [
+          {"kind": "BINOP", "line": 14, "op": "/", "type": "int", "children": [
+            {"kind": "ID", "line": 14, "name": "a", "type": "int"},
+            {"kind": "CALL", "line": 14, "name": "gcd", "type": "int", "children": [
+              {"kind": "ID", "line": 14, "name": "a", "type": "int"},
+              {"kind": "ID", "line": 14, "name": "b", "type": "int"}
+            ]}
+          ]},
+          {"kind": "ID", "line": 14, "name": "b", "type": "int"}
+        ]}
+      ]}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 17, "name": "main", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 17},
+    {"kind": "BLOCK", "line": 17, "children": [
+      {"kind": "EXPR_STMT", "line": 18, "children": [
+        {"kind": "CALL", "line": 18, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 18, "value": "gcd(48, 18) = %d\n", "type": "string"},
+          {"kind": "CALL", "line": 18, "name": "gcd", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 18, "value": 48, "type": "int"},
+            {"kind": "INT_LIT", "line": 18, "value": 18, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 19, "children": [
+        {"kind": "CALL", "line": 19, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 19, "value": "gcd(1071, 462) = %d\n", "type": "string"},
+          {"kind": "CALL", "line": 19, "name": "gcd", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 19, "value": 1071, "type": "int"},
+            {"kind": "INT_LIT", "line": 19, "value": 462, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 20, "children": [
+        {"kind": "CALL", "line": 20, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 20, "value": "lcm(4, 6) = %d\n", "type": "string"},
+          {"kind": "CALL", "line": 20, "name": "lcm", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 20, "value": 4, "type": "int"},
+            {"kind": "INT_LIT", "line": 20, "value": 6, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 21, "children": [
+        {"kind": "CALL", "line": 21, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 21, "value": "lcm(21, 6) = %d\n", "type": "string"},
+          {"kind": "CALL", "line": 21, "name": "lcm", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 21, "value": 21, "type": "int"},
+            {"kind": "INT_LIT", "line": 21, "value": 6, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 22, "children": [
+        {"kind": "INT_LIT", "line": 22, "value": 0, "type": "int"}
+      ]}
+    ]}
+  ]}
+]}
+}

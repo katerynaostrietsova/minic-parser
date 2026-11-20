@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini-C — AST Visualizer</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23c792ea'/%3E%3Ccircle cx='16' cy='9' r='4' fill='%2310131b'/%3E%3Ccircle cx='9' cy='23' r='4' fill='%2310131b'/%3E%3Ccircle cx='23' cy='23' r='4' fill='%2310131b'/%3E%3Cpath d='M16 9L9 23M16 9L23 23' stroke='%2310131b' stroke-width='2'/%3E%3C/svg%3E">
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="logo">AST</span>
+    <div>
+      <h1>Mini-C AST Visualizer</h1>
+      <p class="subtitle">Flex + Bison → AST → інтерпретатор / трансляція в Python</p>
+    </div>
+  </div>
+
+  <div class="controls">
+    <label>Програма
+      <select id="example"></select>
+    </label>
+    <button id="btn-expand">Розгорнути все</button>
+    <button id="btn-collapse">Згорнути</button>
+    <button id="btn-fit">Вмістити</button>
+  </div>
+</header>
+
+<main>
+  <section id="tree-panel">
+    <div id="tree"></div>
+
+    <div class="legend">
+      <span><i class="dot decl"></i>оголошення</span>
+      <span><i class="dot stmt"></i>інструкції</span>
+      <span><i class="dot op"></i>оператори</span>
+      <span><i class="dot call"></i>виклики</span>
+      <span><i class="dot leaf"></i>імена та літерали</span>
+    </div>
+
+    <div id="stats"></div>
+  </section>
+
+  <section id="code-panel">
+    <nav class="tabs">
+      <button class="tab active" data-tab="c">C (Mini-C)</button>
+      <button class="tab" data-tab="py">Python</button>
+      <button class="tab" data-tab="out">Вивід</button>
+    </nav>
+    <div id="code-c"   class="code active"></div>
+    <div id="code-py"  class="code"></div>
+    <div id="code-out" class="code"></div>
+  </section>
+</main>
+
+<div id="tooltip"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

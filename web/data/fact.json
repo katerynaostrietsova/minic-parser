@@ -1,0 +1,68 @@
+{
+"file": "examples/fact.c",
+"source": "#include <stdio.h>\n\n// Рекурсивний факторіал\nint fact(int n) {\n    if (n <= 1)\n        return 1;\n    return n * fact(n - 1);\n}\n\nint main() {\n    for (int i = 1; i <= 10; i++) {\n        printf(\"%d! = %d\\n\", i, fact(i));\n    }\n    return 0;\n}\n",
+"python": "import sys\n\n\ndef _cdiv(a, b):\n    if b == 0:\n        raise ZeroDivisionError(\"division by zero\")\n    q = abs(a) // abs(b)\n    return q if (a >= 0) == (b >= 0) else -q\n\n\ndef _cmod(a, b):\n    return a - _cdiv(a, b) * b\n\n\ndef _printf(fmt, *args):\n    s = fmt % args\n    sys.stdout.write(s)\n    return len(s)\n\n\ndef fact(n):\n    if n <= 1:\n        return 1\n    return n * fact(n - 1)\n\n\ndef main():\n    i = 1\n    while i <= 10:\n        _printf(\"%d! = %d\\n\", i, fact(i))\n        i += 1\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main())\n",
+"output": "1! = 1\n2! = 2\n3! = 6\n4! = 24\n5! = 120\n6! = 720\n7! = 5040\n8! = 40320\n9! = 362880\n10! = 3628800\n",
+"exit_code": 0,
+"ast":
+{"kind": "PROGRAM", "line": 4, "children": [
+  {"kind": "FUNC", "line": 4, "name": "fact", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 4, "children": [
+      {"kind": "PARAM", "line": 4, "name": "n", "decl_type": "int"}
+    ]},
+    {"kind": "BLOCK", "line": 4, "children": [
+      {"kind": "IF", "line": 5, "children": [
+        {"kind": "BINOP", "line": 5, "op": "<=", "type": "int", "children": [
+          {"kind": "ID", "line": 5, "name": "n", "type": "int"},
+          {"kind": "INT_LIT", "line": 5, "value": 1, "type": "int"}
+        ]},
+        {"kind": "RETURN", "line": 6, "children": [
+          {"kind": "INT_LIT", "line": 6, "value": 1, "type": "int"}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 7, "children": [
+        {"kind": "BINOP", "line": 7, "op": "*", "type": "int", "children": [
+          {"kind": "ID", "line": 7, "name": "n", "type": "int"},
+          {"kind": "CALL", "line": 7, "name": "fact", "type": "int", "children": [
+            {"kind": "BINOP", "line": 7, "op": "-", "type": "int", "children": [
+              {"kind": "ID", "line": 7, "name": "n", "type": "int"},
+              {"kind": "INT_LIT", "line": 7, "value": 1, "type": "int"}
+            ]}
+          ]}
+        ]}
+      ]}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 10, "name": "main", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 10},
+    {"kind": "BLOCK", "line": 10, "children": [
+      {"kind": "FOR", "line": 11, "children": [
+        {"kind": "VAR_DECL", "line": 11, "decl_type": "int", "children": [
+          {"kind": "VAR", "line": 11, "name": "i", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 11, "value": 1, "type": "int"}
+          ]}
+        ]},
+        {"kind": "BINOP", "line": 11, "op": "<=", "type": "int", "children": [
+          {"kind": "ID", "line": 11, "name": "i", "type": "int"},
+          {"kind": "INT_LIT", "line": 11, "value": 10, "type": "int"}
+        ]},
+        {"kind": "INCDEC", "line": 11, "name": "i", "op": "++", "prefix": false, "type": "int"},
+        {"kind": "BLOCK", "line": 11, "children": [
+          {"kind": "EXPR_STMT", "line": 12, "children": [
+            {"kind": "CALL", "line": 12, "name": "printf", "type": "int", "children": [
+              {"kind": "STRING_LIT", "line": 12, "value": "%d! = %d\n", "type": "string"},
+              {"kind": "ID", "line": 12, "name": "i", "type": "int"},
+              {"kind": "CALL", "line": 12, "name": "fact", "type": "int", "children": [
+                {"kind": "ID", "line": 12, "name": "i", "type": "int"}
+              ]}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 14, "children": [
+        {"kind": "INT_LIT", "line": 14, "value": 0, "type": "int"}
+      ]}
+    ]}
+  ]}
+]}
+}

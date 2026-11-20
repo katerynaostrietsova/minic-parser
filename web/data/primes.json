@@ -1,0 +1,153 @@
+{
+"file": "examples/primes.c",
+"source": "#include <stdio.h>\n\nint count = 0;   // глобальна змінна\n\n// Перевірка числа на простоту\nint is_prime(int n) {\n    if (n < 2) return 0;\n    for (int d = 2; d * d <= n; d++) {\n        if (n % d == 0) return 0;\n    }\n    return 1;\n}\n\nint main() {\n    // перші 15 простих чисел: continue та break\n    for (int n = 1; n <= 100; n++) {\n        if (!is_prime(n)) continue;\n        printf(\"%d \", n);\n        count++;\n        if (count >= 15) break;\n    }\n    printf(\"\\nprinted %d primes\\n\", count);\n\n    // логічні оператори: && має вищий пріоритет, ніж ||\n    int x = 5, y = -10;\n    if (x > 0 && y > 0 || x == 5)\n        printf(\"condition is true\\n\");\n    else\n        printf(\"condition is false\\n\");\n    return 0;\n}\n",
+"python": "import sys\n\n\ndef _cdiv(a, b):\n    if b == 0:\n        raise ZeroDivisionError(\"division by zero\")\n    q = abs(a) // abs(b)\n    return q if (a >= 0) == (b >= 0) else -q\n\n\ndef _cmod(a, b):\n    return a - _cdiv(a, b) * b\n\n\ndef _printf(fmt, *args):\n    s = fmt % args\n    sys.stdout.write(s)\n    return len(s)\n\n\ncount = 0\n\n\ndef is_prime(n):\n    if n < 2:\n        return 0\n    d = 2\n    while d * d <= n:\n        if _cmod(n, d) == 0:\n            return 0\n        d += 1\n    return 1\n\n\ndef main():\n    global count\n    n = 1\n    while n <= 100:\n        if not is_prime(n):\n            n += 1\n            continue\n        _printf(\"%d \", n)\n        count += 1\n        if count >= 15:\n            break\n        n += 1\n    _printf(\"\\nprinted %d primes\\n\", count)\n    x = 5\n    y = -10\n    if x > 0 and y > 0 or x == 5:\n        _printf(\"condition is true\\n\")\n    else:\n        _printf(\"condition is false\\n\")\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main())\n",
+"output": "2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 \nprinted 15 primes\ncondition is true\n",
+"exit_code": 0,
+"ast":
+{"kind": "PROGRAM", "line": 3, "children": [
+  {"kind": "VAR_DECL", "line": 3, "decl_type": "int", "children": [
+    {"kind": "VAR", "line": 3, "name": "count", "type": "int", "global": true, "children": [
+      {"kind": "INT_LIT", "line": 3, "value": 0, "type": "int"}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 6, "name": "is_prime", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 6, "children": [
+      {"kind": "PARAM", "line": 6, "name": "n", "decl_type": "int"}
+    ]},
+    {"kind": "BLOCK", "line": 6, "children": [
+      {"kind": "IF", "line": 7, "children": [
+        {"kind": "BINOP", "line": 7, "op": "<", "type": "int", "children": [
+          {"kind": "ID", "line": 7, "name": "n", "type": "int"},
+          {"kind": "INT_LIT", "line": 7, "value": 2, "type": "int"}
+        ]},
+        {"kind": "RETURN", "line": 7, "children": [
+          {"kind": "INT_LIT", "line": 7, "value": 0, "type": "int"}
+        ]}
+      ]},
+      {"kind": "FOR", "line": 8, "children": [
+        {"kind": "VAR_DECL", "line": 8, "decl_type": "int", "children": [
+          {"kind": "VAR", "line": 8, "name": "d", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 8, "value": 2, "type": "int"}
+          ]}
+        ]},
+        {"kind": "BINOP", "line": 8, "op": "<=", "type": "int", "children": [
+          {"kind": "BINOP", "line": 8, "op": "*", "type": "int", "children": [
+            {"kind": "ID", "line": 8, "name": "d", "type": "int"},
+            {"kind": "ID", "line": 8, "name": "d", "type": "int"}
+          ]},
+          {"kind": "ID", "line": 8, "name": "n", "type": "int"}
+        ]},
+        {"kind": "INCDEC", "line": 8, "name": "d", "op": "++", "prefix": false, "type": "int"},
+        {"kind": "BLOCK", "line": 8, "children": [
+          {"kind": "IF", "line": 9, "children": [
+            {"kind": "BINOP", "line": 9, "op": "==", "type": "int", "children": [
+              {"kind": "BINOP", "line": 9, "op": "%", "type": "int", "children": [
+                {"kind": "ID", "line": 9, "name": "n", "type": "int"},
+                {"kind": "ID", "line": 9, "name": "d", "type": "int"}
+              ]},
+              {"kind": "INT_LIT", "line": 9, "value": 0, "type": "int"}
+            ]},
+            {"kind": "RETURN", "line": 9, "children": [
+              {"kind": "INT_LIT", "line": 9, "value": 0, "type": "int"}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 11, "children": [
+        {"kind": "INT_LIT", "line": 11, "value": 1, "type": "int"}
+      ]}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 14, "name": "main", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 14},
+    {"kind": "BLOCK", "line": 14, "children": [
+      {"kind": "FOR", "line": 16, "children": [
+        {"kind": "VAR_DECL", "line": 16, "decl_type": "int", "children": [
+          {"kind": "VAR", "line": 16, "name": "n", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 16, "value": 1, "type": "int"}
+          ]}
+        ]},
+        {"kind": "BINOP", "line": 16, "op": "<=", "type": "int", "children": [
+          {"kind": "ID", "line": 16, "name": "n", "type": "int"},
+          {"kind": "INT_LIT", "line": 16, "value": 100, "type": "int"}
+        ]},
+        {"kind": "INCDEC", "line": 16, "name": "n", "op": "++", "prefix": false, "type": "int"},
+        {"kind": "BLOCK", "line": 16, "children": [
+          {"kind": "IF", "line": 17, "children": [
+            {"kind": "UNOP", "line": 17, "op": "!", "type": "int", "children": [
+              {"kind": "CALL", "line": 17, "name": "is_prime", "type": "int", "children": [
+                {"kind": "ID", "line": 17, "name": "n", "type": "int"}
+              ]}
+            ]},
+            {"kind": "CONTINUE", "line": 17}
+          ]},
+          {"kind": "EXPR_STMT", "line": 18, "children": [
+            {"kind": "CALL", "line": 18, "name": "printf", "type": "int", "children": [
+              {"kind": "STRING_LIT", "line": 18, "value": "%d ", "type": "string"},
+              {"kind": "ID", "line": 18, "name": "n", "type": "int"}
+            ]}
+          ]},
+          {"kind": "EXPR_STMT", "line": 19, "children": [
+            {"kind": "INCDEC", "line": 19, "name": "count", "op": "++", "prefix": false, "type": "int", "global": true}
+          ]},
+          {"kind": "IF", "line": 20, "children": [
+            {"kind": "BINOP", "line": 20, "op": ">=", "type": "int", "children": [
+              {"kind": "ID", "line": 20, "name": "count", "type": "int", "global": true},
+              {"kind": "INT_LIT", "line": 20, "value": 15, "type": "int"}
+            ]},
+            {"kind": "BREAK", "line": 20}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 22, "children": [
+        {"kind": "CALL", "line": 22, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 22, "value": "\nprinted %d primes\n", "type": "string"},
+          {"kind": "ID", "line": 22, "name": "count", "type": "int", "global": true}
+        ]}
+      ]},
+      {"kind": "VAR_DECL", "line": 25, "decl_type": "int", "children": [
+        {"kind": "VAR", "line": 25, "name": "x", "type": "int", "children": [
+          {"kind": "INT_LIT", "line": 25, "value": 5, "type": "int"}
+        ]},
+        {"kind": "VAR", "line": 25, "name": "y", "type": "int", "children": [
+          {"kind": "UNOP", "line": 25, "op": "-", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 25, "value": 10, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "IF", "line": 26, "children": [
+        {"kind": "BINOP", "line": 26, "op": "||", "type": "int", "children": [
+          {"kind": "BINOP", "line": 26, "op": "&&", "type": "int", "children": [
+            {"kind": "BINOP", "line": 26, "op": ">", "type": "int", "children": [
+              {"kind": "ID", "line": 26, "name": "x", "type": "int"},
+              {"kind": "INT_LIT", "line": 26, "value": 0, "type": "int"}
+            ]},
+            {"kind": "BINOP", "line": 26, "op": ">", "type": "int", "children": [
+              {"kind": "ID", "line": 26, "name": "y", "type": "int"},
+              {"kind": "INT_LIT", "line": 26, "value": 0, "type": "int"}
+            ]}
+          ]},
+          {"kind": "BINOP", "line": 26, "op": "==", "type": "int", "children": [
+            {"kind": "ID", "line": 26, "name": "x", "type": "int"},
+            {"kind": "INT_LIT", "line": 26, "value": 5, "type": "int"}
+          ]}
+        ]},
+        {"kind": "EXPR_STMT", "line": 27, "children": [
+          {"kind": "CALL", "line": 27, "name": "printf", "type": "int", "children": [
+            {"kind": "STRING_LIT", "line": 27, "value": "condition is true\n", "type": "string"}
+          ]}
+        ]},
+        {"kind": "EXPR_STMT", "line": 29, "children": [
+          {"kind": "CALL", "line": 29, "name": "printf", "type": "int", "children": [
+            {"kind": "STRING_LIT", "line": 29, "value": "condition is false\n", "type": "string"}
+          ]}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 30, "children": [
+        {"kind": "INT_LIT", "line": 30, "value": 0, "type": "int"}
+      ]}
+    ]}
+  ]}
+]}
+}

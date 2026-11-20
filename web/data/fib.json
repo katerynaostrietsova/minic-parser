@@ -1,0 +1,125 @@
+{
+"file": "examples/fib.c",
+"source": "#include <stdio.h>\n\n// Числа Фібоначчі: рекурсивно та ітеративно\nint fib_rec(int n) {\n    if (n < 2) return n;\n    return fib_rec(n - 1) + fib_rec(n - 2);\n}\n\nint fib_iter(int n) {\n    int a = 0, b = 1, t;\n    while (n > 0) {\n        t = a + b;\n        a = b;\n        b = t;\n        n -= 1;\n    }\n    return a;\n}\n\nint main() {\n    int i;\n    for (i = 0; i <= 15; i++)\n        printf(\"fib(%d) = %d / %d\\n\", i, fib_rec(i), fib_iter(i));\n    return 0;\n}\n",
+"python": "import sys\n\n\ndef _cdiv(a, b):\n    if b == 0:\n        raise ZeroDivisionError(\"division by zero\")\n    q = abs(a) // abs(b)\n    return q if (a >= 0) == (b >= 0) else -q\n\n\ndef _cmod(a, b):\n    return a - _cdiv(a, b) * b\n\n\ndef _printf(fmt, *args):\n    s = fmt % args\n    sys.stdout.write(s)\n    return len(s)\n\n\ndef fib_rec(n):\n    if n < 2:\n        return n\n    return fib_rec(n - 1) + fib_rec(n - 2)\n\n\ndef fib_iter(n):\n    a = 0\n    b = 1\n    t = 0\n    while n > 0:\n        t = a + b\n        a = b\n        b = t\n        n -= 1\n    return a\n\n\ndef main():\n    i = 0\n    i = 0\n    while i <= 15:\n        _printf(\"fib(%d) = %d / %d\\n\", i, fib_rec(i), fib_iter(i))\n        i += 1\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main())\n",
+"output": "fib(0) = 0 / 0\nfib(1) = 1 / 1\nfib(2) = 1 / 1\nfib(3) = 2 / 2\nfib(4) = 3 / 3\nfib(5) = 5 / 5\nfib(6) = 8 / 8\nfib(7) = 13 / 13\nfib(8) = 21 / 21\nfib(9) = 34 / 34\nfib(10) = 55 / 55\nfib(11) = 89 / 89\nfib(12) = 144 / 144\nfib(13) = 233 / 233\nfib(14) = 377 / 377\nfib(15) = 610 / 610\n",
+"exit_code": 0,
+"ast":
+{"kind": "PROGRAM", "line": 4, "children": [
+  {"kind": "FUNC", "line": 4, "name": "fib_rec", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 4, "children": [
+      {"kind": "PARAM", "line": 4, "name": "n", "decl_type": "int"}
+    ]},
+    {"kind": "BLOCK", "line": 4, "children": [
+      {"kind": "IF", "line": 5, "children": [
+        {"kind": "BINOP", "line": 5, "op": "<", "type": "int", "children": [
+          {"kind": "ID", "line": 5, "name": "n", "type": "int"},
+          {"kind": "INT_LIT", "line": 5, "value": 2, "type": "int"}
+        ]},
+        {"kind": "RETURN", "line": 5, "children": [
+          {"kind": "ID", "line": 5, "name": "n", "type": "int"}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 6, "children": [
+        {"kind": "BINOP", "line": 6, "op": "+", "type": "int", "children": [
+          {"kind": "CALL", "line": 6, "name": "fib_rec", "type": "int", "children": [
+            {"kind": "BINOP", "line": 6, "op": "-", "type": "int", "children": [
+              {"kind": "ID", "line": 6, "name": "n", "type": "int"},
+              {"kind": "INT_LIT", "line": 6, "value": 1, "type": "int"}
+            ]}
+          ]},
+          {"kind": "CALL", "line": 6, "name": "fib_rec", "type": "int", "children": [
+            {"kind": "BINOP", "line": 6, "op": "-", "type": "int", "children": [
+              {"kind": "ID", "line": 6, "name": "n", "type": "int"},
+              {"kind": "INT_LIT", "line": 6, "value": 2, "type": "int"}
+            ]}
+          ]}
+        ]}
+      ]}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 9, "name": "fib_iter", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 9, "children": [
+      {"kind": "PARAM", "line": 9, "name": "n", "decl_type": "int"}
+    ]},
+    {"kind": "BLOCK", "line": 9, "children": [
+      {"kind": "VAR_DECL", "line": 10, "decl_type": "int", "children": [
+        {"kind": "VAR", "line": 10, "name": "a", "type": "int", "children": [
+          {"kind": "INT_LIT", "line": 10, "value": 0, "type": "int"}
+        ]},
+        {"kind": "VAR", "line": 10, "name": "b", "type": "int", "children": [
+          {"kind": "INT_LIT", "line": 10, "value": 1, "type": "int"}
+        ]},
+        {"kind": "VAR", "line": 10, "name": "t", "type": "int"}
+      ]},
+      {"kind": "WHILE", "line": 11, "children": [
+        {"kind": "BINOP", "line": 11, "op": ">", "type": "int", "children": [
+          {"kind": "ID", "line": 11, "name": "n", "type": "int"},
+          {"kind": "INT_LIT", "line": 11, "value": 0, "type": "int"}
+        ]},
+        {"kind": "BLOCK", "line": 11, "children": [
+          {"kind": "EXPR_STMT", "line": 12, "children": [
+            {"kind": "ASSIGN", "line": 12, "name": "t", "op": "=", "type": "int", "children": [
+              {"kind": "BINOP", "line": 12, "op": "+", "type": "int", "children": [
+                {"kind": "ID", "line": 12, "name": "a", "type": "int"},
+                {"kind": "ID", "line": 12, "name": "b", "type": "int"}
+              ]}
+            ]}
+          ]},
+          {"kind": "EXPR_STMT", "line": 13, "children": [
+            {"kind": "ASSIGN", "line": 13, "name": "a", "op": "=", "type": "int", "children": [
+              {"kind": "ID", "line": 13, "name": "b", "type": "int"}
+            ]}
+          ]},
+          {"kind": "EXPR_STMT", "line": 14, "children": [
+            {"kind": "ASSIGN", "line": 14, "name": "b", "op": "=", "type": "int", "children": [
+              {"kind": "ID", "line": 14, "name": "t", "type": "int"}
+            ]}
+          ]},
+          {"kind": "EXPR_STMT", "line": 15, "children": [
+            {"kind": "ASSIGN", "line": 15, "name": "n", "op": "-=", "type": "int", "children": [
+              {"kind": "INT_LIT", "line": 15, "value": 1, "type": "int"}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 17, "children": [
+        {"kind": "ID", "line": 17, "name": "a", "type": "int"}
+      ]}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 20, "name": "main", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 20},
+    {"kind": "BLOCK", "line": 20, "children": [
+      {"kind": "VAR_DECL", "line": 21, "decl_type": "int", "children": [
+        {"kind": "VAR", "line": 21, "name": "i", "type": "int"}
+      ]},
+      {"kind": "FOR", "line": 22, "children": [
+        {"kind": "ASSIGN", "line": 22, "name": "i", "op": "=", "type": "int", "children": [
+          {"kind": "INT_LIT", "line": 22, "value": 0, "type": "int"}
+        ]},
+        {"kind": "BINOP", "line": 22, "op": "<=", "type": "int", "children": [
+          {"kind": "ID", "line": 22, "name": "i", "type": "int"},
+          {"kind": "INT_LIT", "line": 22, "value": 15, "type": "int"}
+        ]},
+        {"kind": "INCDEC", "line": 22, "name": "i", "op": "++", "prefix": false, "type": "int"},
+        {"kind": "EXPR_STMT", "line": 23, "children": [
+          {"kind": "CALL", "line": 23, "name": "printf", "type": "int", "children": [
+            {"kind": "STRING_LIT", "line": 23, "value": "fib(%d) = %d / %d\n", "type": "string"},
+            {"kind": "ID", "line": 23, "name": "i", "type": "int"},
+            {"kind": "CALL", "line": 23, "name": "fib_rec", "type": "int", "children": [
+              {"kind": "ID", "line": 23, "name": "i", "type": "int"}
+            ]},
+            {"kind": "CALL", "line": 23, "name": "fib_iter", "type": "int", "children": [
+              {"kind": "ID", "line": 23, "name": "i", "type": "int"}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 24, "children": [
+        {"kind": "INT_LIT", "line": 24, "value": 0, "type": "int"}
+      ]}
+    ]}
+  ]}
+]}
+}

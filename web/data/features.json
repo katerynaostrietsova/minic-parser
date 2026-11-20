@@ -1,0 +1,439 @@
+{
+"file": "examples/features.c",
+"source": "#include <stdio.h>\n// Демонстрація складних випадків трансляції: перекриття змінних,\n// присвоєння у виразах, ++/--, continue у for, глобальні змінні,\n// неявні перетворення типів, імена-ключові слова Python (lambda, def).\nint total = 0;\ndouble avg = 0;\nint lambda(int def) { return def * 2; }\nvoid add(int v) { total += v; }\nint main() {\n    int a = 2, b = 3, c;\n    int x = 1;\n    {\n        int x = 10;\n        x++;\n        printf(\"inner x=%d\\n\", x);\n    }\n    printf(\"outer x=%d\\n\", x);\n    c = a = b = 7;\n    printf(\"a=%d b=%d c=%d\\n\", a, b, c);\n    int i = 0;\n    while ((i += 3) < 10) printf(\"i=%d \", i);\n    printf(\"\\n\");\n    int k = 5;\n    k++;\n    ++k;\n    printf(\"k=%d\\n\", k);\n    printf(\"logic: %d %d %d %d\\n\", 2 && 3, 0 || 5, !7, !0);\n    printf(\"cmp: %d %d\\n\", (1 < 2) == 1, 3 > 2 > 1);\n    int s = 0;\n    for (int j = 0; j < 10; j++) {\n        if (j % 2 == 0) continue;\n        if (j > 7) break;\n        for (int t = 0; t < 3; t++) { if (t == 1) continue; s += t; }\n        s += j;\n    }\n    printf(\"s=%d\\n\", s);\n    for (int j = 0; j < 3; j++) add(j * 10);\n    printf(\"total=%d lambda=%d\\n\", total, lambda(21));\n    int q = 17;\n    q /= 2.5;\n    double r = 7;\n    r /= 2;\n    q %= 4;\n    printf(\"q=%d r=%.2f %d %d\\n\", q, r, -17 / 5, -17 % 5);\n    avg = total / 4;\n    printf(\"avg=%.2f %.3f\\n\", avg, total / 4.0);\n    int neg = -(-3);\n    printf(\"neg=%d %d\\n\", neg, - -neg);\n    for (;;) { if (++neg > 5) break; }\n    printf(\"neg=%d\\n\", neg);\n    if (a > 100) printf(\"big\\n\"); else if (a > 5) printf(\"mid\\n\"); else printf(\"small\\n\");\n    double big = 1e10, small = .5, tenth = 0.1;\n    printf(\"%g %g %.17g %d\\n\", big, small, tenth, 0 + 2);\n    return 0;\n}\n",
+"python": "import sys\n\n\ndef _cdiv(a, b):\n    if b == 0:\n        raise ZeroDivisionError(\"division by zero\")\n    q = abs(a) // abs(b)\n    return q if (a >= 0) == (b >= 0) else -q\n\n\ndef _cmod(a, b):\n    return a - _cdiv(a, b) * b\n\n\ndef _printf(fmt, *args):\n    s = fmt % args\n    sys.stdout.write(s)\n    return len(s)\n\n\ntotal = 0\navg = float(0)\n\n\ndef lambda_(def_):\n    return def_ * 2\n\n\ndef add(v):\n    global total\n    total += v\n\n\ndef main():\n    global avg\n    a = 2\n    b = 3\n    c = 0\n    x = 1\n    x_2 = 10\n    x_2 += 1\n    _printf(\"inner x=%d\\n\", x_2)\n    _printf(\"outer x=%d\\n\", x)\n    c = (a := (b := 7))\n    _printf(\"a=%d b=%d c=%d\\n\", a, b, c)\n    i = 0\n    while (i := i + 3) < 10:\n        _printf(\"i=%d \", i)\n    _printf(\"\\n\")\n    k = 5\n    k += 1\n    k += 1\n    _printf(\"k=%d\\n\", k)\n    _printf(\"logic: %d %d %d %d\\n\", bool(2 and 3), bool(0 or 5), not 7, not 0)\n    _printf(\"cmp: %d %d\\n\", (1 < 2) == 1, (3 > 2) > 1)\n    s = 0\n    j = 0\n    while j < 10:\n        if _cmod(j, 2) == 0:\n            j += 1\n            continue\n        if j > 7:\n            break\n        t = 0\n        while t < 3:\n            if t == 1:\n                t += 1\n                continue\n            s += t\n            t += 1\n        s += j\n        j += 1\n    _printf(\"s=%d\\n\", s)\n    j = 0\n    while j < 3:\n        add(j * 10)\n        j += 1\n    _printf(\"total=%d lambda=%d\\n\", total, lambda_(21))\n    q = 17\n    q = int(q / 2.5)\n    r = float(7)\n    r = r / 2\n    q = _cmod(q, 4)\n    _printf(\"q=%d r=%.2f %d %d\\n\", q, r, _cdiv(-17, 5), _cmod(-17, 5))\n    avg = float(_cdiv(total, 4))\n    _printf(\"avg=%.2f %.3f\\n\", avg, total / 4.0)\n    neg = -(-3)\n    _printf(\"neg=%d %d\\n\", neg, -(-neg))\n    while True:\n        if (neg := neg + 1) > 5:\n            break\n    _printf(\"neg=%d\\n\", neg)\n    if a > 100:\n        _printf(\"big\\n\")\n    elif a > 5:\n        _printf(\"mid\\n\")\n    else:\n        _printf(\"small\\n\")\n    big = 1e+10\n    small = 0.5\n    tenth = 0.1\n    _printf(\"%g %g %.17g %d\\n\", big, small, tenth, 0 + 2)\n    return 0\n\n\nif __name__ == \"__main__\":\n    sys.exit(main())\n",
+"output": "inner x=11\nouter x=1\na=7 b=7 c=7\ni=3 i=6 i=9 \nk=7\nlogic: 1 1 0 1\ncmp: 1 0\ns=24\ntotal=30 lambda=42\nq=2 r=3.50 -3 -2\navg=7.00 7.500\nneg=3 3\nneg=6\nmid\n1e+10 0.5 0.10000000000000001 2\n",
+"exit_code": 0,
+"ast":
+{"kind": "PROGRAM", "line": 5, "children": [
+  {"kind": "VAR_DECL", "line": 5, "decl_type": "int", "children": [
+    {"kind": "VAR", "line": 5, "name": "total", "type": "int", "global": true, "children": [
+      {"kind": "INT_LIT", "line": 5, "value": 0, "type": "int"}
+    ]}
+  ]},
+  {"kind": "VAR_DECL", "line": 6, "decl_type": "double", "children": [
+    {"kind": "VAR", "line": 6, "name": "avg", "type": "double", "global": true, "children": [
+      {"kind": "INT_LIT", "line": 6, "value": 0, "type": "int"}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 7, "name": "lambda", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 7, "children": [
+      {"kind": "PARAM", "line": 7, "name": "def", "decl_type": "int"}
+    ]},
+    {"kind": "BLOCK", "line": 7, "children": [
+      {"kind": "RETURN", "line": 7, "children": [
+        {"kind": "BINOP", "line": 7, "op": "*", "type": "int", "children": [
+          {"kind": "ID", "line": 7, "name": "def", "type": "int"},
+          {"kind": "INT_LIT", "line": 7, "value": 2, "type": "int"}
+        ]}
+      ]}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 8, "name": "add", "decl_type": "void", "children": [
+    {"kind": "PARAMS", "line": 8, "children": [
+      {"kind": "PARAM", "line": 8, "name": "v", "decl_type": "int"}
+    ]},
+    {"kind": "BLOCK", "line": 8, "children": [
+      {"kind": "EXPR_STMT", "line": 8, "children": [
+        {"kind": "ASSIGN", "line": 8, "name": "total", "op": "+=", "type": "int", "global": true, "children": [
+          {"kind": "ID", "line": 8, "name": "v", "type": "int"}
+        ]}
+      ]}
+    ]}
+  ]},
+  {"kind": "FUNC", "line": 9, "name": "main", "decl_type": "int", "children": [
+    {"kind": "PARAMS", "line": 9},
+    {"kind": "BLOCK", "line": 9, "children": [
+      {"kind": "VAR_DECL", "line": 10, "decl_type": "int", "children": [
+        {"kind": "VAR", "line": 10, "name": "a", "type": "int", "children": [
+          {"kind": "INT_LIT", "line": 10, "value": 2, "type": "int"}
+        ]},
+        {"kind": "VAR", "line": 10, "name": "b", "type": "int", "children": [
+          {"kind": "INT_LIT", "line": 10, "value": 3, "type": "int"}
+        ]},
+        {"kind": "VAR", "line": 10, "name": "c", "type": "int"}
+      ]},
+      {"kind": "VAR_DECL", "line": 11, "decl_type": "int", "children": [
+        {"kind": "VAR", "line": 11, "name": "x", "type": "int", "children": [
+          {"kind": "INT_LIT", "line": 11, "value": 1, "type": "int"}
+        ]}
+      ]},
+      {"kind": "BLOCK", "line": 12, "children": [
+        {"kind": "VAR_DECL", "line": 13, "decl_type": "int", "children": [
+          {"kind": "VAR", "line": 13, "name": "x", "uname": "x_2", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 13, "value": 10, "type": "int"}
+          ]}
+        ]},
+        {"kind": "EXPR_STMT", "line": 14, "children": [
+          {"kind": "INCDEC", "line": 14, "name": "x", "uname": "x_2", "op": "++", "prefix": false, "type": "int"}
+        ]},
+        {"kind": "EXPR_STMT", "line": 15, "children": [
+          {"kind": "CALL", "line": 15, "name": "printf", "type": "int", "children": [
+            {"kind": "STRING_LIT", "line": 15, "value": "inner x=%d\n", "type": "string"},
+            {"kind": "ID", "line": 15, "name": "x", "uname": "x_2", "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 17, "children": [
+        {"kind": "CALL", "line": 17, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 17, "value": "outer x=%d\n", "type": "string"},
+          {"kind": "ID", "line": 17, "name": "x", "type": "int"}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 18, "children": [
+        {"kind": "ASSIGN", "line": 18, "name": "c", "op": "=", "type": "int", "children": [
+          {"kind": "ASSIGN", "line": 18, "name": "a", "op": "=", "type": "int", "children": [
+            {"kind": "ASSIGN", "line": 18, "name": "b", "op": "=", "type": "int", "children": [
+              {"kind": "INT_LIT", "line": 18, "value": 7, "type": "int"}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 19, "children": [
+        {"kind": "CALL", "line": 19, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 19, "value": "a=%d b=%d c=%d\n", "type": "string"},
+          {"kind": "ID", "line": 19, "name": "a", "type": "int"},
+          {"kind": "ID", "line": 19, "name": "b", "type": "int"},
+          {"kind": "ID", "line": 19, "name": "c", "type": "int"}
+        ]}
+      ]},
+      {"kind": "VAR_DECL", "line": 20, "decl_type": "int", "children": [
+        {"kind": "VAR", "line": 20, "name": "i", "type": "int", "children": [
+          {"kind": "INT_LIT", "line": 20, "value": 0, "type": "int"}
+        ]}
+      ]},
+      {"kind": "WHILE", "line": 21, "children": [
+        {"kind": "BINOP", "line": 21, "op": "<", "type": "int", "children": [
+          {"kind": "ASSIGN", "line": 21, "name": "i", "op": "+=", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 21, "value": 3, "type": "int"}
+          ]},
+          {"kind": "INT_LIT", "line": 21, "value": 10, "type": "int"}
+        ]},
+        {"kind": "EXPR_STMT", "line": 21, "children": [
+          {"kind": "CALL", "line": 21, "name": "printf", "type": "int", "children": [
+            {"kind": "STRING_LIT", "line": 21, "value": "i=%d ", "type": "string"},
+            {"kind": "ID", "line": 21, "name": "i", "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 22, "children": [
+        {"kind": "CALL", "line": 22, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 22, "value": "\n", "type": "string"}
+        ]}
+      ]},
+      {"kind": "VAR_DECL", "line": 23, "decl_type": "int", "children": [
+        {"kind": "VAR", "line": 23, "name": "k", "type": "int", "children": [
+          {"kind": "INT_LIT", "line": 23, "value": 5, "type": "int"}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 24, "children": [
+        {"kind": "INCDEC", "line": 24, "name": "k", "op": "++", "prefix": false, "type": "int"}
+      ]},
+      {"kind": "EXPR_STMT", "line": 25, "children": [
+        {"kind": "INCDEC", "line": 25, "name": "k", "op": "++", "prefix": true, "type": "int"}
+      ]},
+      {"kind": "EXPR_STMT", "line": 26, "children": [
+        {"kind": "CALL", "line": 26, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 26, "value": "k=%d\n", "type": "string"},
+          {"kind": "ID", "line": 26, "name": "k", "type": "int"}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 27, "children": [
+        {"kind": "CALL", "line": 27, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 27, "value": "logic: %d %d %d %d\n", "type": "string"},
+          {"kind": "BINOP", "line": 27, "op": "&&", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 27, "value": 2, "type": "int"},
+            {"kind": "INT_LIT", "line": 27, "value": 3, "type": "int"}
+          ]},
+          {"kind": "BINOP", "line": 27, "op": "||", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 27, "value": 0, "type": "int"},
+            {"kind": "INT_LIT", "line": 27, "value": 5, "type": "int"}
+          ]},
+          {"kind": "UNOP", "line": 27, "op": "!", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 27, "value": 7, "type": "int"}
+          ]},
+          {"kind": "UNOP", "line": 27, "op": "!", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 27, "value": 0, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 28, "children": [
+        {"kind": "CALL", "line": 28, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 28, "value": "cmp: %d %d\n", "type": "string"},
+          {"kind": "BINOP", "line": 28, "op": "==", "type": "int", "children": [
+            {"kind": "BINOP", "line": 28, "op": "<", "type": "int", "children": [
+              {"kind": "INT_LIT", "line": 28, "value": 1, "type": "int"},
+              {"kind": "INT_LIT", "line": 28, "value": 2, "type": "int"}
+            ]},
+            {"kind": "INT_LIT", "line": 28, "value": 1, "type": "int"}
+          ]},
+          {"kind": "BINOP", "line": 28, "op": ">", "type": "int", "children": [
+            {"kind": "BINOP", "line": 28, "op": ">", "type": "int", "children": [
+              {"kind": "INT_LIT", "line": 28, "value": 3, "type": "int"},
+              {"kind": "INT_LIT", "line": 28, "value": 2, "type": "int"}
+            ]},
+            {"kind": "INT_LIT", "line": 28, "value": 1, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "VAR_DECL", "line": 29, "decl_type": "int", "children": [
+        {"kind": "VAR", "line": 29, "name": "s", "type": "int", "children": [
+          {"kind": "INT_LIT", "line": 29, "value": 0, "type": "int"}
+        ]}
+      ]},
+      {"kind": "FOR", "line": 30, "children": [
+        {"kind": "VAR_DECL", "line": 30, "decl_type": "int", "children": [
+          {"kind": "VAR", "line": 30, "name": "j", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 30, "value": 0, "type": "int"}
+          ]}
+        ]},
+        {"kind": "BINOP", "line": 30, "op": "<", "type": "int", "children": [
+          {"kind": "ID", "line": 30, "name": "j", "type": "int"},
+          {"kind": "INT_LIT", "line": 30, "value": 10, "type": "int"}
+        ]},
+        {"kind": "INCDEC", "line": 30, "name": "j", "op": "++", "prefix": false, "type": "int"},
+        {"kind": "BLOCK", "line": 30, "children": [
+          {"kind": "IF", "line": 31, "children": [
+            {"kind": "BINOP", "line": 31, "op": "==", "type": "int", "children": [
+              {"kind": "BINOP", "line": 31, "op": "%", "type": "int", "children": [
+                {"kind": "ID", "line": 31, "name": "j", "type": "int"},
+                {"kind": "INT_LIT", "line": 31, "value": 2, "type": "int"}
+              ]},
+              {"kind": "INT_LIT", "line": 31, "value": 0, "type": "int"}
+            ]},
+            {"kind": "CONTINUE", "line": 31}
+          ]},
+          {"kind": "IF", "line": 32, "children": [
+            {"kind": "BINOP", "line": 32, "op": ">", "type": "int", "children": [
+              {"kind": "ID", "line": 32, "name": "j", "type": "int"},
+              {"kind": "INT_LIT", "line": 32, "value": 7, "type": "int"}
+            ]},
+            {"kind": "BREAK", "line": 32}
+          ]},
+          {"kind": "FOR", "line": 33, "children": [
+            {"kind": "VAR_DECL", "line": 33, "decl_type": "int", "children": [
+              {"kind": "VAR", "line": 33, "name": "t", "type": "int", "children": [
+                {"kind": "INT_LIT", "line": 33, "value": 0, "type": "int"}
+              ]}
+            ]},
+            {"kind": "BINOP", "line": 33, "op": "<", "type": "int", "children": [
+              {"kind": "ID", "line": 33, "name": "t", "type": "int"},
+              {"kind": "INT_LIT", "line": 33, "value": 3, "type": "int"}
+            ]},
+            {"kind": "INCDEC", "line": 33, "name": "t", "op": "++", "prefix": false, "type": "int"},
+            {"kind": "BLOCK", "line": 33, "children": [
+              {"kind": "IF", "line": 33, "children": [
+                {"kind": "BINOP", "line": 33, "op": "==", "type": "int", "children": [
+                  {"kind": "ID", "line": 33, "name": "t", "type": "int"},
+                  {"kind": "INT_LIT", "line": 33, "value": 1, "type": "int"}
+                ]},
+                {"kind": "CONTINUE", "line": 33}
+              ]},
+              {"kind": "EXPR_STMT", "line": 33, "children": [
+                {"kind": "ASSIGN", "line": 33, "name": "s", "op": "+=", "type": "int", "children": [
+                  {"kind": "ID", "line": 33, "name": "t", "type": "int"}
+                ]}
+              ]}
+            ]}
+          ]},
+          {"kind": "EXPR_STMT", "line": 34, "children": [
+            {"kind": "ASSIGN", "line": 34, "name": "s", "op": "+=", "type": "int", "children": [
+              {"kind": "ID", "line": 34, "name": "j", "type": "int"}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 36, "children": [
+        {"kind": "CALL", "line": 36, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 36, "value": "s=%d\n", "type": "string"},
+          {"kind": "ID", "line": 36, "name": "s", "type": "int"}
+        ]}
+      ]},
+      {"kind": "FOR", "line": 37, "children": [
+        {"kind": "VAR_DECL", "line": 37, "decl_type": "int", "children": [
+          {"kind": "VAR", "line": 37, "name": "j", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 37, "value": 0, "type": "int"}
+          ]}
+        ]},
+        {"kind": "BINOP", "line": 37, "op": "<", "type": "int", "children": [
+          {"kind": "ID", "line": 37, "name": "j", "type": "int"},
+          {"kind": "INT_LIT", "line": 37, "value": 3, "type": "int"}
+        ]},
+        {"kind": "INCDEC", "line": 37, "name": "j", "op": "++", "prefix": false, "type": "int"},
+        {"kind": "EXPR_STMT", "line": 37, "children": [
+          {"kind": "CALL", "line": 37, "name": "add", "type": "void", "children": [
+            {"kind": "BINOP", "line": 37, "op": "*", "type": "int", "children": [
+              {"kind": "ID", "line": 37, "name": "j", "type": "int"},
+              {"kind": "INT_LIT", "line": 37, "value": 10, "type": "int"}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 38, "children": [
+        {"kind": "CALL", "line": 38, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 38, "value": "total=%d lambda=%d\n", "type": "string"},
+          {"kind": "ID", "line": 38, "name": "total", "type": "int", "global": true},
+          {"kind": "CALL", "line": 38, "name": "lambda", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 38, "value": 21, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "VAR_DECL", "line": 39, "decl_type": "int", "children": [
+        {"kind": "VAR", "line": 39, "name": "q", "type": "int", "children": [
+          {"kind": "INT_LIT", "line": 39, "value": 17, "type": "int"}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 40, "children": [
+        {"kind": "ASSIGN", "line": 40, "name": "q", "op": "/=", "type": "int", "children": [
+          {"kind": "FLOAT_LIT", "line": 40, "value": 2.5, "type": "double"}
+        ]}
+      ]},
+      {"kind": "VAR_DECL", "line": 41, "decl_type": "double", "children": [
+        {"kind": "VAR", "line": 41, "name": "r", "type": "double", "children": [
+          {"kind": "INT_LIT", "line": 41, "value": 7, "type": "int"}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 42, "children": [
+        {"kind": "ASSIGN", "line": 42, "name": "r", "op": "/=", "type": "double", "children": [
+          {"kind": "INT_LIT", "line": 42, "value": 2, "type": "int"}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 43, "children": [
+        {"kind": "ASSIGN", "line": 43, "name": "q", "op": "%=", "type": "int", "children": [
+          {"kind": "INT_LIT", "line": 43, "value": 4, "type": "int"}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 44, "children": [
+        {"kind": "CALL", "line": 44, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 44, "value": "q=%d r=%.2f %d %d\n", "type": "string"},
+          {"kind": "ID", "line": 44, "name": "q", "type": "int"},
+          {"kind": "ID", "line": 44, "name": "r", "type": "double"},
+          {"kind": "BINOP", "line": 44, "op": "/", "type": "int", "children": [
+            {"kind": "UNOP", "line": 44, "op": "-", "type": "int", "children": [
+              {"kind": "INT_LIT", "line": 44, "value": 17, "type": "int"}
+            ]},
+            {"kind": "INT_LIT", "line": 44, "value": 5, "type": "int"}
+          ]},
+          {"kind": "BINOP", "line": 44, "op": "%", "type": "int", "children": [
+            {"kind": "UNOP", "line": 44, "op": "-", "type": "int", "children": [
+              {"kind": "INT_LIT", "line": 44, "value": 17, "type": "int"}
+            ]},
+            {"kind": "INT_LIT", "line": 44, "value": 5, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 45, "children": [
+        {"kind": "ASSIGN", "line": 45, "name": "avg", "op": "=", "type": "double", "global": true, "children": [
+          {"kind": "BINOP", "line": 45, "op": "/", "type": "int", "children": [
+            {"kind": "ID", "line": 45, "name": "total", "type": "int", "global": true},
+            {"kind": "INT_LIT", "line": 45, "value": 4, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 46, "children": [
+        {"kind": "CALL", "line": 46, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 46, "value": "avg=%.2f %.3f\n", "type": "string"},
+          {"kind": "ID", "line": 46, "name": "avg", "type": "double", "global": true},
+          {"kind": "BINOP", "line": 46, "op": "/", "type": "double", "children": [
+            {"kind": "ID", "line": 46, "name": "total", "type": "int", "global": true},
+            {"kind": "FLOAT_LIT", "line": 46, "value": 4, "type": "double"}
+          ]}
+        ]}
+      ]},
+      {"kind": "VAR_DECL", "line": 47, "decl_type": "int", "children": [
+        {"kind": "VAR", "line": 47, "name": "neg", "type": "int", "children": [
+          {"kind": "UNOP", "line": 47, "op": "-", "type": "int", "children": [
+            {"kind": "UNOP", "line": 47, "op": "-", "type": "int", "children": [
+              {"kind": "INT_LIT", "line": 47, "value": 3, "type": "int"}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 48, "children": [
+        {"kind": "CALL", "line": 48, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 48, "value": "neg=%d %d\n", "type": "string"},
+          {"kind": "ID", "line": 48, "name": "neg", "type": "int"},
+          {"kind": "UNOP", "line": 48, "op": "-", "type": "int", "children": [
+            {"kind": "UNOP", "line": 48, "op": "-", "type": "int", "children": [
+              {"kind": "ID", "line": 48, "name": "neg", "type": "int"}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "FOR", "line": 49, "children": [
+        {"kind": "EMPTY", "line": 49},
+        {"kind": "EMPTY", "line": 49},
+        {"kind": "EMPTY", "line": 49},
+        {"kind": "BLOCK", "line": 49, "children": [
+          {"kind": "IF", "line": 49, "children": [
+            {"kind": "BINOP", "line": 49, "op": ">", "type": "int", "children": [
+              {"kind": "INCDEC", "line": 49, "name": "neg", "op": "++", "prefix": true, "type": "int"},
+              {"kind": "INT_LIT", "line": 49, "value": 5, "type": "int"}
+            ]},
+            {"kind": "BREAK", "line": 49}
+          ]}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 50, "children": [
+        {"kind": "CALL", "line": 50, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 50, "value": "neg=%d\n", "type": "string"},
+          {"kind": "ID", "line": 50, "name": "neg", "type": "int"}
+        ]}
+      ]},
+      {"kind": "IF", "line": 51, "children": [
+        {"kind": "BINOP", "line": 51, "op": ">", "type": "int", "children": [
+          {"kind": "ID", "line": 51, "name": "a", "type": "int"},
+          {"kind": "INT_LIT", "line": 51, "value": 100, "type": "int"}
+        ]},
+        {"kind": "EXPR_STMT", "line": 51, "children": [
+          {"kind": "CALL", "line": 51, "name": "printf", "type": "int", "children": [
+            {"kind": "STRING_LIT", "line": 51, "value": "big\n", "type": "string"}
+          ]}
+        ]},
+        {"kind": "IF", "line": 51, "children": [
+          {"kind": "BINOP", "line": 51, "op": ">", "type": "int", "children": [
+            {"kind": "ID", "line": 51, "name": "a", "type": "int"},
+            {"kind": "INT_LIT", "line": 51, "value": 5, "type": "int"}
+          ]},
+          {"kind": "EXPR_STMT", "line": 51, "children": [
+            {"kind": "CALL", "line": 51, "name": "printf", "type": "int", "children": [
+              {"kind": "STRING_LIT", "line": 51, "value": "mid\n", "type": "string"}
+            ]}
+          ]},
+          {"kind": "EXPR_STMT", "line": 51, "children": [
+            {"kind": "CALL", "line": 51, "name": "printf", "type": "int", "children": [
+              {"kind": "STRING_LIT", "line": 51, "value": "small\n", "type": "string"}
+            ]}
+          ]}
+        ]}
+      ]},
+      {"kind": "VAR_DECL", "line": 52, "decl_type": "double", "children": [
+        {"kind": "VAR", "line": 52, "name": "big", "type": "double", "children": [
+          {"kind": "FLOAT_LIT", "line": 52, "value": 10000000000, "type": "double"}
+        ]},
+        {"kind": "VAR", "line": 52, "name": "small", "type": "double", "children": [
+          {"kind": "FLOAT_LIT", "line": 52, "value": 0.5, "type": "double"}
+        ]},
+        {"kind": "VAR", "line": 52, "name": "tenth", "type": "double", "children": [
+          {"kind": "FLOAT_LIT", "line": 52, "value": 0.10000000000000001, "type": "double"}
+        ]}
+      ]},
+      {"kind": "EXPR_STMT", "line": 53, "children": [
+        {"kind": "CALL", "line": 53, "name": "printf", "type": "int", "children": [
+          {"kind": "STRING_LIT", "line": 53, "value": "%g %g %.17g %d\n", "type": "string"},
+          {"kind": "ID", "line": 53, "name": "big", "type": "double"},
+          {"kind": "ID", "line": 53, "name": "small", "type": "double"},
+          {"kind": "ID", "line": 53, "name": "tenth", "type": "double"},
+          {"kind": "BINOP", "line": 53, "op": "+", "type": "int", "children": [
+            {"kind": "INT_LIT", "line": 53, "value": 0, "type": "int"},
+            {"kind": "INT_LIT", "line": 53, "value": 2, "type": "int"}
+          ]}
+        ]}
+      ]},
+      {"kind": "RETURN", "line": 54, "children": [
+        {"kind": "INT_LIT", "line": 54, "value": 0, "type": "int"}
+      ]}
+    ]}
+  ]}
+]}
+}
